@@ -47,17 +47,18 @@ export const ClinicDashboard = () => {
                 .eq('clinic_id', profile.clinic_id)
                 .eq('is_active', true)
 
-            const pending = todayAppts.filter(a => a.status === 'pending').length
-            const confirmed = todayAppts.filter(a => a.status === 'confirmed').length
+            const appts = todayAppts || []
+            const pending = appts.filter(a => a.status === 'pending').length
+            const confirmed = appts.filter(a => a.status === 'confirmed').length
 
             setStats({
-                todayAppointments: todayAppts.length,
+                todayAppointments: appts.length,
                 pendingAppointments: pending,
                 confirmedAppointments: confirmed,
                 totalDoctors: doctorsCount || 0,
             })
 
-            setAppointments(todayAppts || [])
+            setAppointments(appts)
         } catch (error) {
             console.error('Error fetching dashboard data:', error)
         } finally {

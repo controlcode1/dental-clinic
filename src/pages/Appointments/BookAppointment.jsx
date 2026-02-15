@@ -94,10 +94,20 @@ export const BookAppointment = () => {
         setLoading(true)
 
         try {
+            // Calculate end_time based on service duration
+            const selectedService = services.find(s => s.id === formData.service_id)
+            const duration = selectedService ? selectedService.duration_minutes : 30
+            
+            const startStr = `${formData.appointment_date}T${formData.start_time}`
+            const startDate = new Date(startStr)
+            const endDate = new Date(startDate.getTime() + duration * 60000)
+            const endTime = endDate.toTimeString().split(' ')[0].slice(0, 5)
+
             const { error } = await supabase
                 .from('appointments')
                 .insert([{
                     ...formData,
+                    end_time: endTime,
                     patient_id: user.id,
                 }])
 

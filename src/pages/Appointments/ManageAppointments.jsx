@@ -48,6 +48,13 @@ export const ManageAppointments = () => {
     }
 
     const updateStatus = async (appointmentId, newStatus) => {
+        const confirmMsg = 
+            newStatus === 'confirmed' ? 'هل أنت متأكد من تأكيد هذا الموعد؟' :
+            newStatus === 'completed' ? 'هل أنت متأكد من إكمال هذا الموعد؟' :
+            'هل أنت متأكد من إلغاء هذا الموعد؟'
+
+        if (!window.confirm(confirmMsg)) return
+
         try {
             const { error } = await supabase
                 .from('appointments')
